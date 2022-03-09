@@ -1,0 +1,479 @@
+
+// TEXT_EDIT internal language
+
+
+[[Tag]]
+
+// Tag names need restrictions
+
+// Allow letters, underscore, and numbers, but not spaces, and the numbers can't be first.
+
+Allow nodes to point to a tag?
+
+1T, 2T, 3T
+
+[End: 2]
+
+// We're only adding one way to add next to tag
+
+ok, maybe two ways.
+
+
+[TagName]
+
+
+
+
+[Start]
+
+[StoryNode 1: next = {next1, next2, next3}] {
+
+text= "**Hello**, _Jessie_";
+emotion = // Allow Multiple?;
+nexts[10]= ["next": "stop_before", 1], ["next": 2];
+
+Before= function, function2, function2 1/2;
+After = function3, function4, function5;
+
+// For compiler
+// If there is nothing for these last few, Just put none
+
+//Position= 1, 0 <-- not here!
+}
+
+[StoryNode 1] {
+
+"**Hello**, _Jessie_"
+Nexts[10]= 
+
+//Next markup:
+
+["next": "stop_before", 1], ["next": 2],
+audio: should be attatchable
+But if it's a clip we want to play:
+you might even want to:
+
+contain audio clip link
+Contain Markers To get off /
+Contain captions for each marker
+Contain Next
+
+input: Just prompt
+BUT ALSO:
+
+next
+
+[Next "Hello": "stop_before", 1]
+
+Position= 1, 0
+}
+
+[Audio 6] {
+    audio= "audio.mp3";
+    markers= [4.53: "So I don't think we'd be a good match", "Scared", 1]
+}
+
+
+[Code]
+* Can read code files?
+* Function refs stored here
+
+[Function 1: "function1()", [1, "stop_after"]]
+[Function 2: "s.Say_Some_Stuff()", 4]
+[Function 3: "function3()", 45]
+
+// bf af
+
+
+x code file
+
+// code.c
+
+funcion1() {
+    // All of the while, for, if/else nodes will be put in these functions
+
+    if x ...
+    {
+        ...
+    }
+
+    // Which leaves us with only one problem ...
+    // How do we represent storyNodes being refered to in the functions?
+
+    // I could do something cheeky
+    
+    // 
+}
+
+
+
+// In the text document, I would like this to be organized by tag AND rearangable
+
+// 
+
+//
+
+[StoryNode 1] {
+    Text = 
+    Nexts[10] = [Next "", 1], [Next "", 0], [Next "No thanks", 3]
+
+    position = 
+}
+
+[Input 0] {
+    Prompt = "What is your name?"
+    Next = 1
+
+    position
+}
+
+[While 3] {
+    Expression = 
+    InsideFunction = 
+    Next = 
+    Next = 
+
+    Position
+}
+
+[For 3] {
+    Expression = 
+    InsideFunction = 
+    Next = 
+    Next = 
+
+    Position
+}
+
+[Function] {
+    Params[1]
+    
+    Next = 
+
+    Position = 
+}
+
+
+
+// Structs
+struct T {
+    int type;
+    union { //
+        int field;
+        float field;
+        bool f;
+        char f;
+        char f[100];
+    } value;
+};
+
+struct info {
+    int type;
+    int field;
+    union {
+        struct Tag tag;
+        struct StoryNode currentStory;
+        struct Next next;
+        struct Input input;
+        struct Audio audio;
+        struct Function function;
+    } data;
+} current;
+
+
+struct Tag {
+    int id;
+    char* name[50];
+    struct Next* next;
+};
+
+struct StoryNode {
+    int id;
+    char text [1000];
+    char* emotion;
+    struct Next* nexts; // Basically an array
+
+    before_funcs;
+    after_funcs;
+};
+
+struct Next {
+    char name[50];
+    char* state;
+    int next;
+};
+
+struct Input {
+    int id;
+    char prompt[1000];
+    struct Next* next;
+
+};
+
+struct Audio {
+    int id;
+    char audio[150];
+    Marker* markers[%];
+    Next* next;
+};
+
+struct Marker {
+    float time;
+    char caption[150];
+    char* emotion;
+    int next;
+}
+
+struct Function {
+    int id;
+    char names[150];
+    int next;
+};
+
+# define TAG        1
+# define STORYNODE  2
+# define NEXT       3
+# define INPUT      4
+# define AUDIO      5
+# define MARKER     6
+# define FUNCTION   10
+
+
+
+
+
+{
+    node:
+
+        name:
+
+            type: tag
+            id: 1
+        
+        next:
+
+            "name":
+            contents:
+
+                "stop"
+                1
+
+
+
+    node:
+
+        name:
+
+            type: StoryNode
+            id:1
+        
+        contents:
+
+            main:
+            
+            text: "Hello, Jessie"
+            
+            
+            emotions & next:
+
+            emotion: same
+            nexts: 
+
+                "next":
+                contents:
+
+                    "stop_before"
+                    1
+
+                "next":
+                contents:
+
+                    ""
+                    2
+            
+
+            functions:
+
+            before:
+
+                "function 1"
+                    "function 2"
+                        "function 2 1/2"
+            
+            after:
+
+                "function 3"
+                    "function 4"
+                        "function 5"
+
+    node:
+
+        name:
+
+            type: "input"
+            id: 1
+
+        contents:
+            
+            "prompt"
+            next:
+
+                "name"
+                contents:
+
+                    ""
+                    1
+    
+    node:
+
+        name:
+
+            type:
+            "audio"
+            1
+    
+        contents:
+
+            "audiofile"
+            
+                "4.5"
+
+                    "5.5"
+
+                        "caption 2"
+
+                            "same"
+                            "next"
+                                "stop"
+                                "1"
+
+                        "8.5"
+
+
+
+                    "caption 1"
+
+                        "same"
+                        "next"
+                            "stop"
+                            "1"
+
+
+            "yes"
+
+                "stop after"
+                1
+
+    "0"
+
+        "Tag"
+        "text"
+            "113"
+                "stop"
+
+
+    "1"
+
+        "StoryNode"
+        "Text"
+            "emotion"
+                "1"
+
+                    "stop"
+                        "yes"
+
+                    "2"
+
+                        "stop"
+                            "I'll think about it for later"
+
+                        "3"
+
+                            "stop"
+                                "no thanks"
+
+            "function1"
+
+                "function2"
+                    "function2 1/2"
+
+                "function3"
+                    "function4"
+                    "function5"
+
+
+    "2"
+
+        "Input"
+        "prompt"
+
+            "1"
+                "stop"
+
+
+    "3"
+
+        "Audio"
+        "audio file"
+            "4.5"
+
+                "caption"
+                    "sad"
+                    "1"
+
+
+                "5.5"
+
+                    "caption2"
+                        "same"
+                        "1"
+
+            "1"
+                "stop"
+
+
+    "113"
+
+        "Function"
+        "function1"
+
+            "1"
+
+                "stop"
+
+    
+    "1"
+
+        "StoryNode"
+        "Text"
+            "emotion"
+                "Next"
+
+            "Before"
+
+                "After"
+
+
+
+    "2"
+
+        "Function"
+        "function 1"
+
+            "1"
+
+
+    "2"
+
+        "Function"
+        "Contents:"
+            
+            "function 1"
+            "1"
+        
+    
+
+
+
+
+}
